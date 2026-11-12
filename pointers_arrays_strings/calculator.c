@@ -1,15 +1,6 @@
 #include <stdio.h>
 
 /**
- * main - Entry point for the simple calculator
- *
- * Return: Always 0
- */
-int```bash
-cat << 'EOF' > calculator.c
-#include <stdio.h>
-
-/**
  * main - Entry point for the simple calculator program
  *
  * Return: Always 0
