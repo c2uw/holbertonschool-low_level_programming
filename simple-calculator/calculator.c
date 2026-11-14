@@ -8,6 +8,9 @@
 int main(void)
 {
 	int choice;
+	int a;
+	int b;
+	int c;
 
 	printf("Simple Calculator\n");
 	printf("1) Add\n");
@@ -21,7 +24,15 @@ int main(void)
 		printf("Choice: ");
 
 		if (scanf("%d", &choice) != 1)
-			break;
+		{
+			c = getchar();
+			if (c == EOF)
+				break;
+			while (c != '\n' && c != EOF)
+				c = getchar();
+			printf("Invalid choice\n");
+			continue;
+		}
 
 		if (choice == 0)
 		{
@@ -29,7 +40,17 @@ int main(void)
 			break;
 		}
 
-		if (choice < 1 || choice > 4)
+		if (choice == 1)
+		{
+			printf("A: ");
+			if (scanf("%d", &a) != 1)
+				break;
+			printf("B: ");
+			if (scanf("%d", &b) != 1)
+				break;
+			printf("Result: %d\n", a + b);
+		}
+		else if (choice < 1 || choice > 4)
 			printf("Invalid choice\n");
 	}
 
