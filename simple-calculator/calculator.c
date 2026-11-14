@@ -40,7 +40,7 @@ int main(void)
 			break;
 		}
 
-		if (choice == 1)
+		if (choice == 1 || choice == 2)
 		{
 			printf("A: ");
 			if (scanf("%d", &a) != 1)
@@ -48,7 +48,10 @@ int main(void)
 			printf("B: ");
 			if (scanf("%d", &b) != 1)
 				break;
-			printf("Result: %d\n", a + b);
+			if (choice == 1)
+				printf("Result: %d\n", a + b);
+			else
+				printf("Result: %d\n", a - b);
 		}
 		else if (choice < 1 || choice > 4)
 			printf("Invalid choice\n");
