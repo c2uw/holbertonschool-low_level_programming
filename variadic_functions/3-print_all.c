@@ -2,76 +2,47 @@
 #include <stdio.h>
 
 /**
- * print_char - prints a char argument
+ * print_char - prints a char
  * @ap: the argument list
+ * @sep: the separator
  */
-void print_char(va_list *ap)
+void print_char(va_list *ap, char *sep)
 {
-	printf("%c", va_arg(*ap, int));
+	printf("%s%c", sep, va_arg(*ap, int));
 }
 
 /**
- * print_int - prints an int argument
+ * print_int - prints an int
  * @ap: the argument list
+ * @sep: the separator
  */
-void print_int(va_list *ap)
+void print_int(va_list *ap, char *sep)
 {
-	printf("%d", va_arg(*ap, int));
+	printf("%s%d", sep, va_arg(*ap, int));
 }
 
 /**
- * print_float - prints a float argument
+ * print_float - prints a float
  * @ap: the argument list
+ * @sep: the separator
  */
-void print_float(va_list *ap)
+void print_float(va_list *ap, char *sep)
 {
-	printf("%f", va_arg(*ap, double));
+	printf("%s%f", sep, va_arg(*ap, double));
 }
 
 /**
- * print_str - prints a string argument
+ * print_str - prints a string
  * @ap: the argument list
+ * @sep: the separator
  */
-void print_str(va_list *ap)
+void print_str(va_list *ap, char *sep)
 {
-	char *s;
+	char *s = va_arg(*ap, char *);
 
-	s = va_arg(*ap, char *);
-	if (s == NULL)
+	if (!s)
 		s = "(nil)";
-	printf("%s", s);
-}
-
-/**
- * print_one - prints one argument matching a format char
- * @c: the format character
- * @ap: the argument list
- * @sep: the separator to print first
- *
- * Return: 1 if something was printed, 0 otherwise
- */
-int print_one(char c, va_list *ap, char *sep)
-{
-	printer_t p[] = {
-		{'c', print_char},
-		{'i', print_int},
-		{'f', print_float},
-		{'s', print_str},
-		{0, NULL}
-	};
-	int j = 0;
-
-	while (p[j].c)
-	{
-		if (p[j].c == c)
-		{
-			printf("%s", sep);
-			p[j].f(ap);
-			return (1);
-		}
-		j++;
-	}
-	return (0);
+	printf("%s%s", sep, s);
 }
 
 /**
@@ -82,15 +53,25 @@ int print_one(char c, va_list *ap, char *sep)
  */
 void print_all(const char * const format, ...)
 {
+	printer_t p[] = {
+		{'c', print_char}, {'i', print_int},
+		{'f', print_float}, {'s', print_str}, {0, NULL}
+	};
 	va_list ap;
-	int i = 0;
+	int i = 0, j;
 	char *sep = "";
 
 	va_start(ap, format);
 	while (format && format[i])
 	{
-		if (print_one(format[i], &ap, sep))
+		j = 0;
+		while (p[j].c && p[j].c != format[i])
+			j++;
+		if (p[j].c)
+		{
+			p[j].f(&ap, sep);
 			sep = ", ";
+		}
 		i++;
 	}
 	va_end(ap);
